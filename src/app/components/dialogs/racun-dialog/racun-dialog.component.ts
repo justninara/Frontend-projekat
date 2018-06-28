@@ -1,9 +1,10 @@
-import { Component, OnInit, Inject } from '@angular/core';
-import { Klijent } from '../../../models/klijent';
-import { Racun } from '../../../models/racun';
+import { Component, OnInit, Inject, ViewChild} from '@angular/core';
 import { RacunService } from '../../../services/racun.service';
-import { KlijentService } from '../../../services/klijent.service';
 import { MatSnackBar, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { TipRacuna } from '../../../models/tipRacuna';
+import { TipRacunaService } from '../../../services/tipRacuna.service';
+import { Racun } from '../../../models/racun';
+import { FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-racun-dialog',
@@ -11,35 +12,27 @@ import { MatSnackBar, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
   styleUrls: ['./racun-dialog.component.css']
 })
 export class RacunDialogComponent implements OnInit {
-  klijenti: Klijent[];
+  tipoviRacuna: TipRacuna[];
   public flag: number;
+
   constructor(public snackBar: MatSnackBar,
-    public dialogRef: MatDialogRef<RacunDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: Racun,
-    public racunService: RacunService,
-    public klijentService: KlijentService
+              public dialogRef: MatDialogRef<RacunDialogComponent>,
+              @Inject(MAT_DIALOG_DATA) public data: Racun,
+              public racunService: RacunService,
+              public tipRacunaService: TipRacunaService
+    
   ) { }
 
   ngOnInit() {
-    this.klijentService.getAllKlijent().subscribe(klijenti =>
-    this.klijenti = klijenti);
-  }
-
-  public compareTo(a, b) {
-    return a.id === b.id;
-  }
-
-  public onChange(klijent) {
-    this.data.klijent = klijent;
+    this.tipRacunaService.getAllTipRacuna().subscribe(tipoviRacuna =>
+      this.tipoviRacuna = tipoviRacuna
+    );
   }
 
   public add(): void {
     this.data.id = -1;
     this.racunService.addRacun(this.data);
-    this.snackBar.open('Uspešno ste dodali racun', 'U redu',
-      {
-        duration: 2500
-      });
+    this.snackBar.open('Uspešno ste dodali racun: ', 'U redu', {duration: 2500});
   }
 
   public update(): void {
@@ -64,6 +57,9 @@ export class RacunDialogComponent implements OnInit {
     {
       duration: 1000
     });
+  }
+  compareTo(a, b) {
+    return a.id === b.id;
   }
 
 }

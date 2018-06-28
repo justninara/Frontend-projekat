@@ -3,13 +3,13 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Klijent } from '../models/klijent';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
-import { Identifiers } from '@angular/compiler';
+
 
 @Injectable()
 export class KlijentService {
     klijenti: Klijent[];
-    private readonly API_URL = 'http://localhost:8083/klijent/';
-    // private readonly API_URL = 'http://localhost:8080/backend/klijent/';
+     private readonly API_URL = 'http://localhost:8083/klijent/';
+    //private readonly API_URL = 'http://localhost:8080/backend/klijent/';
 
     dataChange: BehaviorSubject<Klijent[]> = new BehaviorSubject<Klijent[]>([]);
     // privremeno cuvanje podataka iz dijaloga

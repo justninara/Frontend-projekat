@@ -3,7 +3,6 @@
 </mat-toolbar>
 
 <div class="container mat-elevation-z8">
-
   <!-- Za pretragu -->
   <mat-form-field>
       <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Pretraga">
@@ -15,10 +14,6 @@
       <mat-cell *matCellDef="let row">{{row.id}}</mat-cell>
      </ng-container>
 
-    <ng-container matColumnDef="brojlk">
-      <mat-header-cell *matHeaderCellDef mat-sort-header>Brojlicnekarte</mat-header-cell>
-      <mat-cell *matCellDef="let row">{{row.brojlk}}</mat-cell>
-    </ng-container>
 
     <ng-container matColumnDef="ime">
       <mat-header-cell *matHeaderCellDef mat-sort-header>Ime</mat-header-cell>
@@ -44,18 +39,18 @@
       </mat-header-cell>
 
       <mat-cell *matCellDef="let row; let i=index;">
-        <button mat-icon-button color="primary" (click)="openDialog(2, row.brojlk, row.ime, row.prezime, row.kredit)">
+        <button mat-icon-button color="primary" (click)="openDialog(2, row.id, row.ime, row.prezime, row.kredit)">
           <mat-icon aria-label="Edit">edit</mat-icon>
         </button>
 
-        <button mat-icon-button color="primary" (click)="openDialog(3, row.brojlk, row.ime, row.prezime, row.kredit)">
+        <button mat-icon-button color="primary" (click)="openDialog(3, row.id, row.ime, row.prezime, row.kredit)">
           <mat-icon aria-label="Delete">delete</mat-icon>
         </button>
       </mat-cell>
     </ng-container>
 
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-    <mat-row style="cursor: default" *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    <mat-row style="cursor: pointer" *matRowDef="let row; columns: displayedColumns;" (click)="selectRow(row)" [ngClass]="{'selectRow': selektovaniKlijent != null && selektovaniKlijent.id == row.id}"></mat-row>
   </mat-table>
 
   <!-- Za paginaciju -->
@@ -65,3 +60,9 @@
     [showFirstLastButtons]= "true"
     ></mat-paginator>
 </div>
+<div class="container mat-elevation-z8">
+  <app-racun *ngIf="selektovaniKlijent" [selektovaniKlijent]=selektovaniKlijent></app-racun>
+</div>
+
+
+

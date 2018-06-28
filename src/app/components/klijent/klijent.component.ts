@@ -1,6 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { HttpClient } from '@angular/common/http';
 import { KlijentService } from '../../services/klijent.service';
 import { Klijent } from '../../models/klijent';
 import { Kredit } from '../../models/kredit';
@@ -14,14 +13,14 @@ import { KlijentDialogComponent } from '../dialogs/klijent-dialog/klijent-dialog
 })
 export class KlijentComponent implements OnInit {
 
-  displayedColumns = ['id', 'brojlk', 'ime', 'prezime', 'kredit', 'actions'];
-  exampleDatabase: KlijentService;
+  displayedColumns = ['id', 'ime', 'prezime', 'kredit', 'actions'];
   dataSource: MatTableDataSource<Klijent>;
+  selektovaniKlijent: Klijent;
 
   @ViewChild (MatPaginator) paginator: MatPaginator;
   @ViewChild (MatSort) sort: MatSort;
 
-  constructor(public httpClient: HttpClient,
+  constructor(
               public klijentService: KlijentService,
               public dialog: MatDialog) { }
 
@@ -31,9 +30,9 @@ export class KlijentComponent implements OnInit {
 
   public loadData() {
     this.klijentService.getAllKlijent().subscribe(data => {
-      this.dataSource = new MatTableDataSource(data);
+      this.dataSource = new MatTableDataSource<Klijent>(data);
 
-      // pretraga po nazivu ugnježdenog objekta
+        // pretraga po nazivu ugnježdenog objekta
       // tslint:disable-next-line:no-shadowed-variable
       this.dataSource.filterPredicate = (data, filter: string) => {
         const accumulator = (currentTerm, key) => {
@@ -52,6 +51,7 @@ export class KlijentComponent implements OnInit {
           default: return data[property];
         }
       };
+      
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
   });
@@ -63,8 +63,8 @@ export class KlijentComponent implements OnInit {
     this.dataSource.filter = filterValue;
   }
 
-  public openDialog (flag: number, id: number, brojlk: number, ime: string, prezime: string, kredit: Kredit ) {
-    const dialogRef = this.dialog.open(KlijentDialogComponent, {data: {id: id, brojlk: brojlk, ime: ime, prezime: prezime, kredit: kredit}});
+  public openDialog (flag: number, id: number,  ime: string, prezime: string, kredit: Kredit ) {
+    const dialogRef = this.dialog.open(KlijentDialogComponent, {data: {id: id, ime: ime, prezime: prezime, kredit: kredit}});
     dialogRef.componentInstance.flag = flag;
     dialogRef.afterClosed().subscribe(result => {
       if (result === 1) {
@@ -73,4 +73,7 @@ export class KlijentComponent implements OnInit {
     });
   }
 
+  public selectRow(row) {
+    this.selektovaniKlijent = row;
+  }
 }

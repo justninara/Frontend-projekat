@@ -11,7 +11,6 @@ import { MatSnackBar, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
   styleUrls: ['./klijent-dialog.component.css']
 })
 export class KlijentDialogComponent implements OnInit {
-
   krediti: Kredit[];
   public flag: number;
   constructor(public snackBar: MatSnackBar,
@@ -37,7 +36,7 @@ export class KlijentDialogComponent implements OnInit {
   public add(): void {
     this.data.id = -1;
     this.klijentService.addKlijent(this.data);
-    this.snackBar.open('Uspešno ste dodali klijenta', 'U redu',
+    this.snackBar.open('Uspešno ste dodali klijenta' + this.data, 'U redu',
       {
         duration: 2500
       });
@@ -45,7 +44,7 @@ export class KlijentDialogComponent implements OnInit {
 
   public update(): void {
     this.klijentService.updateKlijent(this.data);
-    this.snackBar.open('Uspešno ste modifikovali klijenta', 'U redu',
+    this.snackBar.open('Uspešno ste modifikovali klijenta' + this.data.id, 'U redu',
       {
         duration: 2500
       });
@@ -53,7 +52,7 @@ export class KlijentDialogComponent implements OnInit {
 
   public delete(): void {
     this.klijentService.deleteKlijent(this.data.id);
-    this.snackBar.open('Uspešno ste obrisali klijenta', 'U redu',
+    this.snackBar.open('Uspešno ste obrisali klijenta' + this.data.id, 'U redu',
       {
         duration: 2500
       });
